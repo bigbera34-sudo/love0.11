@@ -1,0 +1,172 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ขอโทษนะคนดี 💗</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;
+ display:flex;justify-content:center;align-items:center;
+ font-family:Arial,sans-serif;
+ background:linear-gradient(135deg,#ffe0ec,#ffc2d8);
+ color:#c2185b;padding:15px;
+}
+.card{
+ background:white;width:100%;max-width:420px;
+ padding:25px 20px;border-radius:25px;
+ text-align:center;box-shadow:0 10px 30px #d76b9c44;
+}
+.page{display:none}
+.page.active{display:block}
+h1{font-size:27px}
+p{line-height:1.8}
+button{
+ border:0;border-radius:15px;padding:15px;
+ font-size:16px;cursor:pointer;
+ touch-action:manipulation;
+}
+.next{
+ background:#ff4f91;color:white;width:100%;
+ margin-top:18px;
+}
+.choice{
+ display:block;width:100%;margin:10px 0;
+ background:#ffe5ef;color:#ad1457;
+}
+.choice.selected{background:#ffb5d0;border:2px solid #e83e8c}
+.back{background:#eee;color:#777;margin-top:10px}
+.actions{display:flex;justify-content:center;gap:15px;flex-wrap:wrap}
+#yes{background:#ff4f91;color:white}
+#no{background:#888;color:white;position:relative}
+#msg{background:#fff0f6;padding:15px;border-radius:15px}
+.heart{
+ position:fixed;bottom:-30px;animation:float 5s linear forwards;
+ pointer-events:none;
+}
+@keyframes float{
+ to{transform:translateY(-110vh) rotate(360deg);opacity:0}
+}
+</style>
+</head>
+<body>
+<div class="card">
+
+<!-- หน้า 1 -->
+<section class="page active" id="p1">
+ <div style="font-size:75px">🧸💗</div>
+ <h1>ขอโทษนะคนดี</h1>
+ <p>มีอะไรอยากบอกเธอ<br>
+ ขอเวลาสักนิดได้ไหม 🥺</p>
+ <button class="next" onclick="go(2)">เริ่มอ่านกันเลย 💌</button>
+</section>
+
+<!-- หน้า 2 -->
+<section class="page" id="p2">
+ <div style="font-size:55px">🥺</div>
+ <h1>เค้าอยากขอโทษเรื่อง...</h1>
+ <p>เลือกเรื่องที่เค้าอยากขอโทษได้เลย</p>
+
+ <button class="choice" onclick="choose(1,this)">
+  1. ขอโทษที่มาสาย ไม่ตรงเวลา ⏰
+ </button>
+ <button class="choice" onclick="choose(2,this)">
+  2. ขอโทษที่วันนี้ทำตัวไม่น่ารัก 💗
+ </button>
+ <button class="choice" onclick="choose(3,this)">
+  3. ขอโทษที่อ่านแชทแล้วไม่ตอบ 💬
+ </button>
+
+ <button class="next" onclick="nextMessage()">ถัดไป ➜</button>
+ <button class="back" onclick="go(1)">ย้อนกลับ</button>
+</section>
+
+<!-- หน้า 3 -->
+<section class="page" id="p3">
+ <div style="font-size:65px">💌</div>
+ <h1>ข้อความจากใจเค้า</h1>
+ <div id="msg"></div>
+ <p>เค้าไม่ได้อยากทำให้เธอเสียใจเลยนะ</p>
+ <button class="next" onclick="go(4)">ถัดไป ➜</button>
+ <button class="back" onclick="go(2)">ย้อนกลับ</button>
+</section>
+
+<!-- หน้า 4 -->
+<section class="page" id="p4">
+ <div style="font-size:75px">🥹💗</div>
+ <h1>เธอจะยกโทษให้เค้าไหม?</h1>
+ <p>เค้ารู้ว่าเค้าทำผิด<br>
+ แต่อยากขอโอกาสแก้ตัวนะ</p>
+ <div class="actions">
+  <button id="yes" onclick="yes()">ยกโทษให้ ❤️</button>
+  <button id="no">ไม่ยกโทษให้ 💔</button>
+ </div>
+ <p id="hint"></p>
+ <button class="back" onclick="go(3)">ย้อนกลับ</button>
+</section>
+
+<!-- หน้า 5 -->
+<section class="page" id="p5">
+ <div style="font-size:90px">🥰💖</div>
+ <h1>ขอบคุณนะคนดี!</h1>
+ <p>ขอบคุณที่ให้โอกาสเค้า<br>
+ เค้าจะพยายามปรับปรุงตัว<br>
+ จะใส่ใจความรู้สึกเธอให้มากขึ้น<br>
+ และจะไม่ทำให้เธอเสียใจแบบนี้อีกนะ</p>
+ <div style="font-size:50px">💐🧸💕</div>
+ <h2>รักนะ ❤️</h2>
+</section>
+
+</div>
+
+<script>
+let selected=0;
+function go(n){
+ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+ document.getElementById('p'+n).classList.add('active');
+ window.scrollTo(0,0);
+}
+function choose(n,btn){
+ selected=n;
+ document.querySelectorAll('.choice').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
+}
+const messages={
+ 1:"เค้าขอโทษที่มาสายและไม่ตรงเวลา ทำให้เธอต้องรอ ต่อไปเค้าจะวางแผนเวลาให้ดีกว่านี้นะ ❤️",
+ 2:"เค้าขอโทษที่วันนี้ทำตัวไม่น่ารัก ทำให้เธอโกรธและเสียความรู้สึก เค้าจะปรับปรุงตัวนะ 🥺",
+ 3:"เค้าขอโทษที่อ่านแชทแล้วไม่ตอบ ทำให้เธอรู้สึกไม่ดี ต่อไปเค้าจะใส่ใจและสื่อสารให้ดีกว่านี้ 💗"
+};
+function nextMessage(){
+ if(!selected){
+  alert("เลือกเรื่องที่อยากขอโทษก่อนนะ 🥺");
+  return;
+ }
+ document.getElementById('msg').innerText=messages[selected];
+ go(3);
+}
+function yes(){
+ go(5);
+ for(let i=0;i<45;i++){
+  let h=document.createElement('div');
+  h.className='heart';
+  h.innerText=['💗','💕','❤️','💖'][Math.floor(Math.random()*4)];
+  h.style.left=Math.random()*100+'vw';
+  h.style.animationDelay=Math.random()*2+'s';
+  h.style.fontSize='25px';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+ }
+}
+const no=document.getElementById('no');
+no.addEventListener('pointerdown',e=>{
+ e.preventDefault();
+ const x=Math.random()*140-70;
+ const y=Math.random()*100-50;
+ no.style.transform=`translate(${x}px,${y}px)`;
+ document.getElementById('hint').innerText="งื้ออ อย่าเพิ่งกดเลยนะ ขอแก้ตัวก่อนได้ไหม 🥺";
+});
+</script>
+</body>
+</html>
